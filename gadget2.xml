@@ -1,23 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-    <ModulePrefs title="Hello Example">
-        <Require feature="minimessage"/>
+    <ModulePrefs
+            title="Meeting Cost"
+            description="Gives a $ valuation of upcoming meetings"
+            author="Rupert Chen"
+            author_email="rupert.chen@gmail.com">
+        <Require feature="dynamic-height"/>
+        <Require feature="google.calendar-0.5"/>
+        <Require feature="google.calendar-0.5.read"/>
     </ModulePrefs>
     <UserPref name="Name" display_name="Your Name" default_value="World"/>
     <Content type="html">
         <![CDATA[
+        <script>
+            /**
+             * Time of next refresh as ms since 1 January 1970 00:00:00 UTC
+             * @type {number}
+             */
+            var nextRefreshTime = 0;
 
-<script src="http://serkanet.com/gadget/meeting_cost.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+            /**
+             * Identifier of the repeated redraw action
+             */
+            var redrawIntervalId;
 
-<div id="authorize-div" style="display: none">
-    <span>Authorize access to Google Calendar API</span>
-    <!--Button for the user to click to initiate auth sequence -->
-    <button id="authorize-button" onclick="handleAuthClick(event)">
-        Authorize
-    </button>
-</div>
-<pre id="output"></pre>
-     ]]>
+            /**
+             * Minutes between data fetches
+             * @type {number}
+             */
+            var refetchPeriod = 10;
+
+            function getUpcomingEvents() {
+                // TODO: implement
+                console.log('getUpcomingEvents');
+            }
+
+            function drawScreen() {
+                // TODO: implement
+                console.log('drawScreen');
+            }
+
+            function redrawPeriodically() {
+                var now = Date.now();
+                // TODO: determine whether this is necessary if we are subscribed to data changes
+                if (nextRefreshTime <= now) {
+                    nextRefreshTime = now + (refetchPeriod * 60000);
+                    getUpcomingEvents();
+                }
+
+                drawScreen();
+                redrawIntervalId = window.setInterval(drawScreen, 60000);
+            }
+        </script>
+        <div id=main>Loading...</div>
+        <script>
+            /**
+             * Initialize the gadget
+             *
+             * @param {Object} prefs The set of preferences.
+             */
+            function init(prefs) {
+                // TODO: Anything interesting to do with these prefs?
+                console.log(prefs);
+
+                google.calendar.subscribeToDataChange(getUpcomingEvents);
+                redrawPeriodically();
+            }
+
+            google.calendar.getPreferences(init);
+        </script>
+        ]]>
     </Content>
 </Module>
