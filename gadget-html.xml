@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
     <ModulePrefs title="URL Quickstart Example"/>
+    <UserPref
+            name="profileId"
+            display_name="Profile ID"
+            datatype="string"
+            urlparam="id"
+            required="true"/>
     <Content type="url" href="http://serkanet.com/gadget/quickstart.html"/>
 </Module>

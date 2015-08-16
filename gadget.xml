@@ -6,6 +6,29 @@
     <UserPref name="Name" display_name="Your Name" default_value="World"/>
     <Content type="html">
         <![CDATA[
+
+<script type="text/javascript">
+
+        // Your Client ID can be retrieved from your project in the Google
+        // Developer Console, https://console.developers.google.com
+        var CLIENT_ID = '386257031933-h15q16iahuqivm2dkboe71v94va272dl.apps.googleusercontent.com';
+
+        var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
+
+        /**
+         * Check if current user has authorized this application.
+         */
+        function checkAuth() {
+            gapi.auth.authorize(
+                    {
+                        'client_id': CLIENT_ID,
+                        'scope': SCOPES,
+                        'immediate': true
+                    }, handleAuthResult);
+        }
+</script>
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+
 <div>
   <h3>I'm on top now!</h3>
 </div>
