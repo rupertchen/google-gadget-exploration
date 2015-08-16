@@ -72,24 +72,50 @@
                 'orderBy': 'startTime'
             });
 
-            request.execute(function(resp) {
+            request.execute(function (resp) {
                 var events = resp.items;
                 appendPre('Upcoming events:');
 
                 if (events.length > 0) {
                     for (i = 0; i < events.length; i++) {
                         var event = events[i];
+                        var cost = calculateCost(event);
                         var when = event.start.dateTime;
                         if (!when) {
                             when = event.start.date;
                         }
-                        appendPre(event.summary + ' (' + when + ')')
+                        appendPre('$' + cost + ' ' + event.summary + ' (' + when + ')')
                     }
                 } else {
                     appendPre('No upcoming events found.');
                 }
 
             });
+        }
+
+        function calculateCost(calendarEvent) {
+            console.log(calendarEvent);
+
+            duration = getEventDurationInMinutes(calendarEvent);
+            console.log('Duration: ' + duration);
+
+            // Calculate cost of attendees
+            if (calendarEvent.attendees) {
+                numAttendees = calendarEvent.attendees.length;
+            } else {
+                numAttendees = 0;
+            }
+            attendeeRate = 1; // $/minute
+            attendeesCost = attendeeRate * numAttendees * duration;
+            return Math.round(attendeesCost);
+        }
+
+        function getEventDurationInMinutes(calendarEvent) {
+            start = new Date(calendarEvent.start.dateTime);
+            end = new Date(calendarEvent.end.dateTime);
+            console.log(start);
+            console.log(end);
+            return (end.getTime() - start.getTime()) / 60000;
         }
 
         /**
