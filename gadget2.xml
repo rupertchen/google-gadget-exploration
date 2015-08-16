@@ -49,7 +49,6 @@
             var UPCOMING_EVENTS = [];
 
             function getUpcomingEvents() {
-                // TODO: implement
                 console.log('getUpcomingEvents');
 
                 // Set interval to be 7 days
@@ -83,19 +82,16 @@
                 var list_items = [];
                 var numEvents = UPCOMING_EVENTS.length;
                 for (var i = 0; i < numEvents; i++) {
-                    console.log('render list?');
                     var event = UPCOMING_EVENTS[i];
                     if (event.allDay || event.status === 'declined') {
-                        console.log('nope');
                         continue;
                     }
-                    console.log('yep');
-                    // "???" currently used for missing titles
-                    list_items.push('<li>' + gadgets.util.escapeString(event.title || '???') + '</li>');
+                    list_items.push('<li>$' + calculateCost(event) + ' '
+                            + gadgets.util.escapeString(event.title || '(No title)') + '</li>');
                 }
 
                 var html;
-                if (list_items.length > 0){
+                if (list_items.length > 0) {
                     html = '<ul>' + list_items.join('') + '</ul>';
                 } else {
                     html = 'No upcoming events';
@@ -104,10 +100,30 @@
                 gadgets.window.adjustHeight();
             }
 
+            function calculateCost(event) {
+                console.log(event);
+
+                duration = getEventDurationInMinutes(event);
+                console.log('Duration: ' + duration + ' minutes');
+
+                // TODO: Calculate cost of attendees by applying a function against each
+                attendeeRate = 1; // $ per minute
+                attendeesCost = attendeeRate * event.attendeeCount * duration;
+                console.log(attendeesCost);
+                return Math.round(attendeesCost);
+            }
+
+            function getEventDurationInMinutes(event) {
+                start = google.calendar.utils.toDate(event.startTime, PREFS.timeOffset);
+                end = google.calendar.utils.toDate(event.endTime, PREFS.timeOffset);
+                return (end.getTime() - start.getTime()) / 60000;
+            }
+
             function redrawPeriodically() {
                 var now = Date.now();
                 // TODO: determine whether this is necessary if we are subscribed to data changes
                 // if this i removed, then just have to fire off the initial fetch manually in init()
+                // turns out it still is because the event could be modified from another browser and its update may not trigger on this page
                 if (nextRefreshTime <= now) {
                     nextRefreshTime = now + (refetchPeriod * 60000);
                     getUpcomingEvents();
@@ -116,7 +132,13 @@
                 drawScreen();
                 redrawIntervalId = window.setInterval(drawScreen, 60000);
             }
+
+            function refreshEvents() {
+                console.log('refresh events');
+                google.calendar.refreshEvents();
+            }
         </script>
+        <button onclick="refreshEvents()">Force Refresh Events</button>
         <div id=main>Loading...</div>
         <script>
             /**
