@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-    <ModulePrefs title="Go to Photo Album" height="250" scaling="false" />
+    <ModulePrefs title="Hello Example">
+        <Require feature="minimessage"/>
+    </ModulePrefs>
+    <UserPref name="Name" display_name="Your Name" default_value="World"/>
     <Content type="html">
         <![CDATA[
-    <div style="text-align:center"><a
-      id="Riggs" title="My Photo Album" target="_blank"
-      href="http://picasaweb.google.com/doc.examples/ShelfBoy">
-      <img border="0" alt="Photo" src="http://doc.examples.googlepages.com/Riggsie-OP.jpg"
-      title="Click Here."></a>
-    </div>
-  ]]>
+<div>
+  <h3>I'm on top now!</h3>
+</div>
+
+
+<div id="messageBox"></div>
+
+<script type="text/javascript">
+  // In the constructor, state that messages should be be displayed
+  // in the messageBox <div> rather than at the top of the gadget.
+  var msg = new gadgets.MiniMessage(__MODULE_ID__, document.getElementById("messageBox"));
+  msg.createDismissibleMessage("I'm the first message.");
+  msg.createDismissibleMessage("I'm the second message.");
+  msg.createDismissibleMessage("I'm at the bottom.");
+
+</script>
+     ]]>
     </Content>
 </Module>
