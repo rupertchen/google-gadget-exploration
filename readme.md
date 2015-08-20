@@ -5,7 +5,7 @@ First, build `gadget.xml` by running the following.
     make
 
 Next, host `gadget.xml` somewhere publicly accessible.  Say, at the URL
-_<gadgeturl>_.  Then, go to the following URL in your browser.
+`<gadgeturl>`.  Then, go to the following URL in your browser.
 
     http://www.google.com/calendar/render?gadgeturl=<gadgeturl>
 
