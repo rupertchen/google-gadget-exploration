@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs
+            title="Meeting Cost"
+            description="Gives a $ valuation of upcoming meetings"
+            author="Rupert Chen"
+            author_email="rupert.chen@gmail.com">
+        <Require feature="dynamic-height"/>
+        <Require feature="google.calendar-0.5"/>
+        <Require feature="google.calendar-0.5.read"/>
+    </ModulePrefs>
+    <UserPref name="Name" display_name="Your Name" default_value="World"/>
+    <Content type="html">
+        <![CDATA[
