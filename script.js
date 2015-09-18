@@ -71,13 +71,26 @@ function drawScreen() {
         if (event.allDay || event.status === 'declined') {
             continue;
         }
-        list_items.push('<li>$' + calculateCost(event) + ' '
+        var bgColor;
+        var borderColor;
+        if (event.palette) {
+            bgColor = event.palette.medium;
+            borderColor = event.palette.dark;
+        } else {
+            bgColor = '#888888';
+            borderColor = '#000000';
+        }
+        list_items.push('<li class="event"'
+                + ' onclick="clickEvent(\'' + event.id + '\')"'
+                + ' style="background-color: ' + bgColor + '; border-color: ' + borderColor + ';"'
+                + '>'
+                + '<span class="cost">$' + calculateCost(event) + '</span>'
                 + gadgets.util.escapeString(event.title || '(No title)') + '</li>');
     }
 
     var html;
     if (list_items.length > 0) {
-        html = '<ul>' + list_items.join('') + '</ul>';
+        html = '<ul class="event-list">' + list_items.join('') + '</ul>';
     } else {
         html = 'No upcoming events';
     }
@@ -85,15 +98,20 @@ function drawScreen() {
     gadgets.window.adjustHeight();
 }
 
+function clickEvent(eventId) {
+  google.calendar.showEvent(eventId);
+}
+
 function calculateCost(event) {
     console.log(event);
 
-    duration = getEventDurationInMinutes(event);
+    var duration = getEventDurationInMinutes(event);
     console.log('Duration: ' + duration + ' minutes');
 
     // TODO: Calculate cost of attendees by applying a function against each
-    attendeeRate = 1; // $ per minute
-    attendeesCost = attendeeRate * event.attendeeCount * duration;
+    var attendeeRate = 1; // $ per minute
+    var attendeeCount = Math.max(1, event.attendeeCount);
+    var attendeesCost = attendeeRate * attendeeCount * duration;
     console.log(attendeesCost);
     return Math.round(attendeesCost);
 }

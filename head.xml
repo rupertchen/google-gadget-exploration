@@ -5,6 +5,7 @@
             description="Gives a $ valuation of upcoming meetings"
             author="Rupert Chen"
             author_email="rupert.chen@gmail.com">
+        <Require feature="locked-domain"/>
         <Require feature="dynamic-height"/>
         <Require feature="google.calendar-0.5"/>
         <Require feature="google.calendar-0.5.read"/>

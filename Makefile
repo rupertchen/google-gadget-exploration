@@ -1,7 +1,10 @@
 .PHONY: clean
-.INTERMEDIATE: script.html init.html
+.INTERMEDIATE: style.html script.html init.html
 
-gadget.xml: head.xml script.html ui.html init.html foot.xml
+gadget.xml: head.xml style.html script.html ui.html init.html foot.xml
+	cat $^ > $@
+
+style.html: style_open style.css style_close
 	cat $^ > $@
 
 script.html: script_open script.js script_close
@@ -11,4 +14,4 @@ init.html: script_open init.js script_close
 	cat $^ > $@
 
 clean:
-	rm -f gadget.xml script.html init.html
+	rm -f gadget.xml style.html script.html init.html
