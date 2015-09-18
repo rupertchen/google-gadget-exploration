@@ -1,4 +1,5 @@
 .PHONY: clean
+.INTERMEDIATE: script.html init.html
 
 gadget.xml: head.xml script.html ui.html init.html foot.xml
 	cat $^ > $@
